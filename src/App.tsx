@@ -1,10 +1,12 @@
 import ChevronLeftIcon from './assets/icons/chevron-left.svg?react'
 import ChevronRightIcon from './assets/icons/chevron-right.svg?react'
+import SearchIcon from './assets/icons/search.svg?react' // vite svgr -> transforma svgs em components react
 import { Alert } from './components/alert'
 import { Badge } from './components/badge'
 import { Button } from './components/button'
 import { ButtonIcon } from './components/button-icon'
 import { Divider } from './components/divider'
+import { InputText } from './components/input-text'
 
 export function App() {
   return (
@@ -47,6 +49,10 @@ export function App() {
 
       <div>
         <Divider />
+      </div>
+
+      <div>
+        <InputText placeholder="Buscar foto" icon={SearchIcon} />
       </div>
     </div>
   )
