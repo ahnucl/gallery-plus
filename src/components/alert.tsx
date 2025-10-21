@@ -1,5 +1,5 @@
 import { tv, type VariantProps } from 'tailwind-variants'
-import Text from './text'
+import { Text } from './text'
 
 export const alertVariants = tv({
   base: `
@@ -19,12 +19,7 @@ export interface AlertProps
   extends React.ComponentProps<'div'>,
     VariantProps<typeof alertVariants> {}
 
-export default function Alert({
-  variant,
-  children,
-  className,
-  ...props
-}: AlertProps) {
+export function Alert({ variant, children, className, ...props }: AlertProps) {
   return (
     <div
       role="alert"
