@@ -1,4 +1,4 @@
-import { defineConfig } from 'tsup';
+import { defineConfig } from 'tsup'
 
 export default defineConfig({
   entry: ['server/main.ts'],
@@ -11,4 +11,4 @@ export default defineConfig({
   bundle: true,
   splitting: false,
   treeshake: true,
-}); 
+})
