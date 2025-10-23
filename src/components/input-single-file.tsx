@@ -1,10 +1,10 @@
+import { useMemo } from 'react'
 import { useWatch } from 'react-hook-form'
 import { tv, type VariantProps } from 'tailwind-variants'
 import FileImageIcon from '../assets/icons/image.svg?react'
 import UploadFileIcon from '../assets/icons/upload-file.svg?react'
 import { Icon } from './icon'
 import { Text, textVariants } from './text'
-import { useMemo } from 'react'
 
 export const inputSingleFileVariants = tv({
   base: `
@@ -40,6 +40,8 @@ interface InputSingleFileProps
     Omit<React.ComponentProps<'input'>, 'size' | 'form'> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   form: any
+  allowedExtensions: string[]
+  maxFileSizeInMB: number
   error?: React.ReactNode
 }
 
@@ -47,6 +49,8 @@ export function InputSingleFile({
   form,
   size,
   error,
+  allowedExtensions,
+  maxFileSizeInMB,
   ...props
 }: InputSingleFileProps) {
   const formValues = useWatch({ control: form.control })
@@ -55,10 +59,29 @@ export function InputSingleFile({
     () => formValues[name]?.[0],
     [formValues, name]
   )
+  const { fileExtension, fileSize } = useMemo(
+    () => ({
+      fileExtension: formFile?.name?.split('.')?.pop()?.toLowerCase() || '',
+      fileSize: formFile?.size || 0,
+    }),
+    [formFile]
+  )
+
+  function isValidExtension() {
+    return allowedExtensions.includes(fileExtension)
+  }
+
+  function isValidSize() {
+    return fileSize <= maxFileSizeInMB * 1024 * 1024 // MBs to bytes
+  }
+
+  function isValidFile() {
+    return isValidExtension() && isValidSize()
+  }
 
   return (
     <div>
-      {!formFile ? (
+      {!formFile || !isValidFile() ? (
         <>
           <div className="w-full relative group cursor-pointer">
             <input
@@ -81,11 +104,23 @@ export function InputSingleFile({
               </Text>
             </div>
           </div>
-          {error && (
-            <Text variant="label-small" className="text-accent-red">
-              Erro no campo
-            </Text>
-          )}
+          <div className="flex flex-col gap-1 mt-1">
+            {formFile && !isValidExtension() && (
+              <Text variant="label-small" className="text-accent-red">
+                Tipo de arquivo inválido
+              </Text>
+            )}
+            {formFile && !isValidSize() && (
+              <Text variant="label-small" className="text-accent-red">
+                O tamanho do arquivo ultrapassa o máximo permitido
+              </Text>
+            )}
+            {error && (
+              <Text variant="label-small" className="text-accent-red">
+                {error}
+              </Text>
+            )}
+          </div>
         </>
       ) : (
         <div

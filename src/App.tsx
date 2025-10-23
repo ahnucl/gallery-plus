@@ -69,6 +69,8 @@ export function App() {
 
       <div>
         <InputSingleFile
+          allowedExtensions={['png', 'jpg', 'jpeg', 'webp']}
+          maxFileSizeInMB={50}
           form={testForm}
           {...testForm.register('file')}
         ></InputSingleFile>
