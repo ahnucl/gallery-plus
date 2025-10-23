@@ -7,6 +7,7 @@ import { Button } from './components/button'
 import { ButtonIcon } from './components/button-icon'
 import { Divider } from './components/divider'
 import { InputCheckbox } from './components/input-checkbox'
+import { InputSingleFile } from './components/input-single-file'
 import { InputText } from './components/input-text'
 
 export function App() {
@@ -61,6 +62,10 @@ export function App() {
         <InputCheckbox />
         <InputCheckbox size="sm" />
         <InputCheckbox disabled />
+      </div>
+
+      <div>
+        <InputSingleFile></InputSingleFile>
       </div>
     </div>
   )
