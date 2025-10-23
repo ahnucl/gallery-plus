@@ -1,3 +1,4 @@
+import { useForm } from 'react-hook-form'
 import ChevronLeftIcon from './assets/icons/chevron-left.svg?react'
 import ChevronRightIcon from './assets/icons/chevron-right.svg?react'
 import SearchIcon from './assets/icons/search.svg?react' // vite svgr -> transforma svgs em components react
@@ -11,6 +12,8 @@ import { InputSingleFile } from './components/input-single-file'
 import { InputText } from './components/input-text'
 
 export function App() {
+  const testForm = useForm()
+
   return (
     <div className="grid gap-7 p-6">
       <div className="flex gap-3">
@@ -65,7 +68,10 @@ export function App() {
       </div>
 
       <div>
-        <InputSingleFile></InputSingleFile>
+        <InputSingleFile
+          form={testForm}
+          {...testForm.register('file')}
+        ></InputSingleFile>
       </div>
     </div>
   )

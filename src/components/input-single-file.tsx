@@ -1,8 +1,10 @@
+import { useWatch } from 'react-hook-form'
 import { tv, type VariantProps } from 'tailwind-variants'
-import UploadFileIcon from '../assets/icons/upload-file.svg?react'
 import FileImageIcon from '../assets/icons/image.svg?react'
+import UploadFileIcon from '../assets/icons/upload-file.svg?react'
 import { Icon } from './icon'
 import { Text, textVariants } from './text'
+import { useMemo } from 'react'
 
 export const inputSingleFileVariants = tv({
   base: `
@@ -35,71 +37,86 @@ export const inputSingleFileIconVariants = tv({
 
 interface InputSingleFileProps
   extends VariantProps<typeof inputSingleFileVariants>,
-    Omit<React.ComponentProps<'input'>, 'size'> {
-  error: React.ReactNode
+    Omit<React.ComponentProps<'input'>, 'size' | 'form'> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: any
+  error?: React.ReactNode
 }
 
 export function InputSingleFile({
+  form,
   size,
   error,
   ...props
 }: InputSingleFileProps) {
+  const formValues = useWatch({ control: form.control })
+  const name = props.name || ''
+  const formFile: File | undefined = useMemo(
+    () => formValues[name]?.[0],
+    [formValues, name]
+  )
+
   return (
     <div>
-      <div className="w-full relative group cursor-pointer">
-        <input
-          type="file"
-          className={`
+      {!formFile ? (
+        <>
+          <div className="w-full relative group cursor-pointer">
+            <input
+              type="file"
+              className={`
             absolute top-0 right-0 w-full h-full 
             opacity-0 cursor-pointer
           `}
-          {...props}
-        />
-        <div className={inputSingleFileVariants({ size })}>
-          <Icon
-            svg={UploadFileIcon}
-            className={inputSingleFileIconVariants({ size })}
-          />
-          <Text variant="label-medium" className="text-placeholder">
-            Arraste o arquivo aqui
-            <br />
-            ou clique para selecionarz
-          </Text>
-        </div>
-      </div>
-      {error && (
-        <Text variant="label-small" className="text-accent-red">
-          Erro no campo
-        </Text>
-      )}
-
-      <div
-        className={`
+              {...props}
+            />
+            <div className={inputSingleFileVariants({ size })}>
+              <Icon
+                svg={UploadFileIcon}
+                className={inputSingleFileIconVariants({ size })}
+              />
+              <Text variant="label-medium" className="text-placeholder">
+                Arraste o arquivo aqui
+                <br />
+                ou clique para selecionarz
+              </Text>
+            </div>
+          </div>
+          {error && (
+            <Text variant="label-small" className="text-accent-red">
+              Erro no campo
+            </Text>
+          )}
+        </>
+      ) : (
+        <div
+          className={`
           flex gap-3 items-center
           border border-solid border-border-primary mt-5
           p-3 rounded
         `}
-      >
-        <Icon svg={FileImageIcon} className="fill-white w-6 h-6" />
-        <div className="flex flex-col">
-          <div className="truncate max-w-80">
-            <Text variant="label-medium" className="text-placeholder">
-              Nome do arquivo.png
-            </Text>
-          </div>
-          <div className="flex">
-            <button
-              type="button"
-              className={textVariants({
-                variant: 'label-small',
-                className: 'text-accent-red cursor-pointer hover:underline',
-              })}
-            >
-              Remover
-            </button>
+        >
+          <Icon svg={FileImageIcon} className="fill-white w-6 h-6" />
+          <div className="flex flex-col">
+            <div className="truncate max-w-80">
+              <Text variant="label-medium" className="text-placeholder">
+                {formFile.name}
+              </Text>
+            </div>
+            <div className="flex">
+              <button
+                type="button"
+                className={textVariants({
+                  variant: 'label-small',
+                  className: 'text-accent-red cursor-pointer hover:underline',
+                })}
+                onClick={() => form.setValue(name, undefined)}
+              >
+                Remover
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }
