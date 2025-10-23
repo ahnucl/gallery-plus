@@ -6,6 +6,7 @@ import { Badge } from './components/badge'
 import { Button } from './components/button'
 import { ButtonIcon } from './components/button-icon'
 import { Divider } from './components/divider'
+import { InputCheckbox } from './components/input-checkbox'
 import { InputText } from './components/input-text'
 
 export function App() {
@@ -51,8 +52,15 @@ export function App() {
         <Divider />
       </div>
 
-      <div>
+      <div className="space-y-2">
         <InputText placeholder="Buscar foto" icon={SearchIcon} />
+        <InputText placeholder="Buscar foto" icon={SearchIcon} disabled />
+      </div>
+
+      <div className="space-x-2">
+        <InputCheckbox />
+        <InputCheckbox size="sm" />
+        <InputCheckbox disabled />
       </div>
     </div>
   )
