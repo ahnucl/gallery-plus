@@ -10,9 +10,12 @@ import { Divider } from './components/divider'
 import { InputCheckbox } from './components/input-checkbox'
 import { InputSingleFile } from './components/input-single-file'
 import { InputText } from './components/input-text'
+import { ImagefilePreview } from './components/image-file-preview'
 
 export function App() {
   const testForm = useForm()
+  const file = testForm.watch('file')
+  const fileSource = file?.[0] ? URL.createObjectURL(file[0]) : undefined
 
   return (
     <div className="grid gap-7 p-6">
@@ -69,9 +72,10 @@ export function App() {
 
       <div>
         <InputSingleFile
+          form={testForm}
           allowedExtensions={['png', 'jpg', 'jpeg', 'webp']}
           maxFileSizeInMB={50}
-          form={testForm}
+          replaceBy={<ImagefilePreview src={fileSource} alt="Imagem" />}
           {...testForm.register('file')}
         ></InputSingleFile>
       </div>
