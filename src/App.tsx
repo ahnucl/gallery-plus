@@ -6,11 +6,21 @@ import { Alert } from './components/alert'
 import { Badge } from './components/badge'
 import { Button } from './components/button'
 import { ButtonIcon } from './components/button-icon'
+import {
+  Dialog,
+  DialogBody,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+} from './components/dialog'
 import { Divider } from './components/divider'
+import { ImagefilePreview } from './components/image-file-preview'
 import { InputCheckbox } from './components/input-checkbox'
 import { InputSingleFile } from './components/input-single-file'
 import { InputText } from './components/input-text'
-import { ImagefilePreview } from './components/image-file-preview'
+import { Text } from './components/text'
 
 export function App() {
   const testForm = useForm()
@@ -77,7 +87,36 @@ export function App() {
           maxFileSizeInMB={50}
           replaceBy={<ImagefilePreview src={fileSource} alt="Imagem" />}
           {...testForm.register('file')}
-        ></InputSingleFile>
+        />
+      </div>
+
+      <div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button>Abrir Modal</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>Teste dialog header</DialogHeader>
+            <DialogBody>
+              <Text as="div" className="mb-4">
+                Teste conteúdo do dialog
+              </Text>
+              <InputSingleFile
+                form={testForm}
+                allowedExtensions={['png', 'jpg', 'jpeg', 'webp']}
+                maxFileSizeInMB={50}
+                replaceBy={<ImagefilePreview src={fileSource} alt="Imagem" />}
+                {...testForm.register('file')}
+              />
+            </DialogBody>
+            <DialogFooter>
+              <DialogClose asChild>
+                <Button variant="secondary">Cancelar</Button>
+              </DialogClose>
+              <Button>Adicionar</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )
