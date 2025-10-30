@@ -13,19 +13,19 @@ export const imagelPreviewImageVariants = tv({
 })
 
 interface ImagePreviewProps extends React.ComponentProps<'img'> {
-  imageClasseName?: string
+  imageClassName?: string
 }
 
 export function ImagePreview({
   className,
-  imageClasseName,
+  imageClassName,
   ...props
 }: ImagePreviewProps) {
   return (
     <div className={imagePreviewVariants({ className })}>
       <img
         className={imagelPreviewImageVariants({
-          className: imageClasseName,
+          className: imageClassName,
         })}
         {...props}
       />
