@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "build-server": "tsc --noEmit -p tsconfig.server.json && tsup",
     "dev-server": "tsup --watch --onSuccess \"node server/dist/main.js\"",
-    "run-server": "node server/dist/main.js"
+    "run-server": "node server/dist/main.js",
+    "type-check": "tsc -b --noEmit"
   },
   "dependencies": {
     "@fastify/cors": "8.5.0",
