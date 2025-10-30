@@ -1,4 +1,7 @@
 import { useForm } from 'react-hook-form'
+import ChevronLeftIcon from '../assets/icons/chevron-left.svg?react'
+import ChevronRightIcon from '../assets/icons/chevron-right.svg?react'
+import SearchIcon from '../assets/icons/search.svg?react' // vite svgr -> transforma svgs em components react
 import { Alert } from '../components/alert'
 import { Badge } from '../components/badge'
 import { Button } from '../components/button'
@@ -13,14 +16,11 @@ import {
   DialogTrigger,
 } from '../components/dialog'
 import { Divider } from '../components/divider'
-import { ImagefilePreview } from '../components/image-file-preview'
+import { ImagePreview } from '../components/image-preview'
 import { InputCheckbox } from '../components/input-checkbox'
 import { InputSingleFile } from '../components/input-single-file'
 import { InputText } from '../components/input-text'
 import { Text } from '../components/text'
-import ChevronLeftIcon from '../assets/icons/chevron-left.svg?react'
-import ChevronRightIcon from '../assets/icons/chevron-right.svg?react'
-import SearchIcon from '../assets/icons/search.svg?react' // vite svgr -> transforma svgs em components react
 
 export function PageComponents() {
   const testForm = useForm()
@@ -85,7 +85,7 @@ export function PageComponents() {
           form={testForm}
           allowedExtensions={['png', 'jpg', 'jpeg', 'webp']}
           maxFileSizeInMB={50}
-          replaceBy={<ImagefilePreview src={fileSource} alt="Imagem" />}
+          replaceBy={<ImagePreview src={fileSource} alt="Imagem" />}
           {...testForm.register('file')}
         />
       </div>
@@ -105,7 +105,7 @@ export function PageComponents() {
                 form={testForm}
                 allowedExtensions={['png', 'jpg', 'jpeg', 'webp']}
                 maxFileSizeInMB={50}
-                replaceBy={<ImagefilePreview src={fileSource} alt="Imagem" />}
+                replaceBy={<ImagePreview src={fileSource} alt="Imagem" />}
                 {...testForm.register('file')}
               />
             </DialogBody>
