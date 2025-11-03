@@ -7,12 +7,24 @@ export function PageHome() {
     <Container>
       <AlbumsFilter
         albums={[
-          { id: '1', title: 'asdasdas' },
-          { id: '2', title: 'asdasdasasdasdas' },
+          { id: '1', title: 'Álbum 1' },
+          { id: '2', title: 'Álbum 2' },
         ]}
         className="mb-9"
       />
-      <PhotosList photos={[]} />
+      <PhotosList
+        photos={[
+          {
+            id: '123',
+            title: 'Olá mundo',
+            imageId: 'portrait-tower.png',
+            albuns: [
+              { id: '1', title: 'Álbum 1' },
+              { id: '2', title: 'Álbum 2' },
+            ],
+          },
+        ]}
+      />
     </Container>
   )
 }
