@@ -65,7 +65,7 @@ export function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
                     key={photo.id}
                     src={`/images/${photo.imageId}`}
                     title={photo.title}
-                    className="w-20 h-20 rounded"
+                    className="w-20 h-20"
                   />
                 ))}
               </div>
@@ -76,7 +76,7 @@ export function AlbumNewDialog({ trigger }: AlbumNewDialogProps) {
                 {Array.from({ length: 4 }).map((_, index) => (
                   <Skeleton
                     key={`photo-loading-${index}`}
-                    className="w-20 h-20 rounded"
+                    className="w-20 h-20 rounded-lg"
                   />
                 ))}
               </div>
