@@ -16,7 +16,7 @@ export function PhotoWidget({ photo, loading = false }: PhotoWidgetProps) {
     <div className="flex flex-col gap-4">
       {!loading ? (
         <ImagePreview
-          src={photo.imageId}
+          src={`/images/${photo.imageId}`}
           title={photo.title}
           imageClassName="w-[10.875rem] h-[10.875rem] rounded-lg"
         />
@@ -36,13 +36,13 @@ export function PhotoWidget({ photo, loading = false }: PhotoWidgetProps) {
         <div className="flex gap-1 min-h-[1.375rem]">
           {!loading ? (
             <>
-              {photo.albuns.slice(0, 1).map((album) => (
+              {photo.albums.slice(0, 1).map((album) => (
                 <Badge className="truncate" size="xs" key={album.id}>
                   {album.title}
                 </Badge>
               ))}
-              {photo.albuns.length > 1 && (
-                <Badge size="xs"> +{photo.albuns.length - 1} </Badge>
+              {photo.albums.length > 1 && (
+                <Badge size="xs"> +{photo.albums.length - 1} </Badge>
               )}
             </>
           ) : (
