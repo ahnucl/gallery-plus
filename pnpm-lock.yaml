@@ -23,6 +23,9 @@ dependencies:
   '@tailwindcss/vite':
     specifier: ^4.1.10
     version: 4.1.14(vite@6.4.0)
+  '@tanstack/react-query':
+    specifier: ^5.90.7
+    version: 5.90.7(react@19.2.0)
   axios:
     specifier: ^1.13.2
     version: 1.13.2
@@ -1592,6 +1595,19 @@ packages:
       '@tailwindcss/oxide': 4.1.14
       tailwindcss: 4.1.14
       vite: 6.4.0(@types/node@20.19.21)
+    dev: false
+
+  /@tanstack/query-core@5.90.7:
+    resolution: {integrity: sha512-6PN65csiuTNfBMXqQUxQhCNdtm1rV+9kC9YwWAIKcaxAauq3Wu7p18j3gQY3YIBJU70jT/wzCCZ2uqto/vQgiQ==}
+    dev: false
+
+  /@tanstack/react-query@5.90.7(react@19.2.0):
+    resolution: {integrity: sha512-wAHc/cgKzW7LZNFloThyHnV/AX9gTg3w5yAv0gvQHPZoCnepwqCMtzbuPbb2UvfvO32XZ46e8bPOYbfZhzVnnQ==}
+    peerDependencies:
+      react: ^18 || ^19
+    dependencies:
+      '@tanstack/query-core': 5.90.7
+      react: 19.2.0
     dev: false
 
   /@types/estree@1.0.8:
