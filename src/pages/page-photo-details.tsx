@@ -58,14 +58,7 @@ export function PagePhotoDetails() {
             Álbuns
           </Text>
 
-          <AlbumsListSelectable
-            photo={photo}
-            albums={[
-              { id: '1', title: 'Álbum 1' },
-              { id: '2', title: 'Álbum 2' },
-            ]}
-            loading={isLoadingPhoto}
-          />
+          <AlbumsListSelectable photo={photo} />
         </div>
       </div>
     </Container>
