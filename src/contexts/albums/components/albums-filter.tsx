@@ -2,12 +2,14 @@ import cx from 'classnames'
 import { Button } from '../../../components/button'
 import { Skeleton } from '../../../components/skeleton'
 import { Text } from '../../../components/text'
+import { usePhotos } from '../../photos/hooks/use-photos'
 import { useAlbums } from '../hooks/use-albums'
 
 interface AlbumsFilterProps extends React.ComponentProps<'div'> {}
 
 export function AlbumsFilter({ className, ...props }: AlbumsFilterProps) {
   const { albums, isLoadingAlbums } = useAlbums()
+  const { filters } = usePhotos()
 
   return (
     <div
@@ -18,15 +20,21 @@ export function AlbumsFilter({ className, ...props }: AlbumsFilterProps) {
       <div className="flex gap-3">
         {!isLoadingAlbums ? (
           <>
-            <Button variant="primary" size="sm" className="cursor-pointer">
+            <Button
+              variant={filters.albumId === null ? 'primary' : 'ghost'}
+              size="sm"
+              className="cursor-pointer"
+              onClick={() => filters.setAlbumId(null)}
+            >
               Todos
             </Button>
             {albums.map((album) => (
               <Button
                 key={album.id}
-                variant="ghost"
+                variant={filters.albumId === album.id ? 'primary' : 'ghost'}
                 size="sm"
                 className="cursor-pointer"
+                onClick={() => filters.setAlbumId(album.id)}
               >
                 {album.title}
               </Button>
