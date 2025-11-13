@@ -6,19 +6,7 @@ export function PageHome() {
   return (
     <Container>
       <AlbumsFilter className="mb-9" />
-      <PhotosList
-        photos={[
-          {
-            id: '123',
-            title: 'Olá mundo',
-            imageId: 'portrait-tower.png',
-            albums: [
-              { id: '1', title: 'Álbum 1' },
-              { id: '2', title: 'Álbum 2' },
-            ],
-          },
-        ]}
-      />
+      <PhotosList />
     </Container>
   )
 }
