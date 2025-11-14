@@ -7,10 +7,15 @@ import { useAlbums } from '../hooks/use-albums'
 
 interface AlbumsListSelectableProps {
   photo: Photo
+  isLoadingPhoto: boolean
 }
 
-export function AlbumsListSelectable({ photo }: AlbumsListSelectableProps) {
+export function AlbumsListSelectable({
+  photo,
+  isLoadingPhoto,
+}: AlbumsListSelectableProps) {
   const { albums, isLoadingAlbums } = useAlbums()
+  const isLoading = isLoadingAlbums || isLoadingPhoto
 
   function isChecked(albumId: string) {
     return photo.albums.some((album) => album.id === albumId)
@@ -32,7 +37,7 @@ export function AlbumsListSelectable({ photo }: AlbumsListSelectableProps) {
 
   return (
     <ul className="flex flex-col gap-4">
-      {!isLoadingAlbums &&
+      {!isLoading &&
         albums.map((album, index) => (
           <li key={album.id}>
             <div className="flex items-center justify-between gap-1">
@@ -49,7 +54,7 @@ export function AlbumsListSelectable({ photo }: AlbumsListSelectableProps) {
           </li>
         ))}
 
-      {isLoadingAlbums &&
+      {isLoading &&
         Array.from({ length: 5 }).map((_, index) => (
           <li key={`albums-list-${index}`}>
             <Skeleton className="h-[2.5rem]" />
