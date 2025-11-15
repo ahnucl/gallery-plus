@@ -57,7 +57,7 @@ dependencies:
     specifier: ^4.1.10
     version: 4.1.14
   zod:
-    specifier: ^3.22.4
+    specifier: ^3.25.76
     version: 3.25.76
 
 devDependencies:
