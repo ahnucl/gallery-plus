@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Alert } from '../../../components/alert'
 import { Button } from '../../../components/button'
@@ -24,6 +25,8 @@ interface PhotoNewDialogProps {
 }
 
 export function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
+  const [modalOpen, setModalOpen] = useState(false)
+
   const form = useForm({
     resolver: zodResolver(photoNewFormSchema),
   })
@@ -32,12 +35,18 @@ export function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
   const file = form.watch('file')
   const fileSource = file?.[0] ? URL.createObjectURL(file[0]) : undefined
 
+  useEffect(() => {
+    if (!modalOpen) {
+      form.reset()
+    }
+  }, [modalOpen, form])
+
   function handleSubmit(payload: PhotoNewFormSchema) {
     console.log(payload)
   }
 
   return (
-    <Dialog>
+    <Dialog open={modalOpen} onOpenChange={setModalOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
