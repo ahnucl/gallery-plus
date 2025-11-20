@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { Alert } from '../../../components/alert'
 import { Button } from '../../../components/button'
@@ -18,6 +18,7 @@ import { InputText } from '../../../components/input-text'
 import { Skeleton } from '../../../components/skeleton'
 import { Text } from '../../../components/text'
 import { useAlbums } from '../../albums/hooks/use-albums'
+import { usePhoto } from '../hooks/use-photo'
 import { photoNewFormSchema, type PhotoNewFormSchema } from '../schemas'
 
 interface PhotoNewDialogProps {
@@ -31,6 +32,9 @@ export function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
     resolver: zodResolver(photoNewFormSchema),
   })
   const { albums, isLoadingAlbums } = useAlbums()
+  const { createPhoto } = usePhoto()
+
+  const [isCreatingPhoto, setIsCreatingPhoto] = useTransition()
 
   const file = form.watch('file')
   const fileSource = file?.[0] ? URL.createObjectURL(file[0]) : undefined
@@ -57,7 +61,10 @@ export function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
   }
 
   function handleSubmit(payload: PhotoNewFormSchema) {
-    console.log(payload)
+    setIsCreatingPhoto(async () => {
+      await createPhoto(payload)
+      setModalOpen(false)
+    })
   }
 
   return (
@@ -124,10 +131,18 @@ export function PhotoNewDialog({ trigger }: PhotoNewDialogProps) {
 
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="secondary">Cancelar</Button>
+              <Button variant="secondary" disabled={isCreatingPhoto}>
+                Cancelar
+              </Button>
             </DialogClose>
 
-            <Button type="submit">Adicionar</Button>
+            <Button
+              type="submit"
+              disabled={isCreatingPhoto}
+              handling={isCreatingPhoto}
+            >
+              {isCreatingPhoto ? 'Adicionando...' : 'Adicionar'}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>
