@@ -221,7 +221,10 @@ export async function photosRoutes(
       }
 
       const { id } = paramsResult.data
-      const success = await photosService.managePhotoAlbums(id, bodyResult.data)
+      const success = await photosService.managePhotoAlbumsQueue(
+        id,
+        bodyResult.data
+      )
 
       if (!success) {
         reply

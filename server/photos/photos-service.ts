@@ -273,4 +273,68 @@ export class PhotosService {
     await this.dbService.writeDatabase(db)
     return true
   }
+
+  async managePhotoAlbumsQueue(
+    photoId: string,
+    albumsData: ManagePhotoAlbumsRequest
+  ): Promise<boolean> {
+    await this.dbService
+      .enqueueWrite(async (db) => {
+        // Check if photo exists
+        const photoExists = db.photos.some((photo) => photo.id === photoId)
+        if (!photoExists) {
+          throw new Error()
+        }
+
+        // Check if all provided albums exist
+        const { albumsIds } = albumsData
+        for (const albumId of albumsIds) {
+          const albumExists = db.albums.some((album) => album.id === albumId)
+          if (!albumExists) {
+            throw new Error()
+          }
+        }
+
+        // Get current albums for this photo
+        const currentAlbumsIds = db.photosOnAlbums
+          .filter((relation) => relation.photoId === photoId)
+          .map((relation) => relation.albumId)
+
+        // Use Sets to calculate differences
+        const currentSet = new Set(currentAlbumsIds)
+        const desiredSet = new Set(albumsIds)
+
+        // Albums to add: in desired but not in current
+        const albumsToAdd = [...desiredSet].filter(
+          (albumId) => !currentSet.has(albumId)
+        )
+
+        // Albums to remove: in current but not in desired
+        const albumsToRemove = [...currentSet].filter(
+          (albumId) => !desiredSet.has(albumId)
+        )
+
+        // Remove photo from albums that should no longer contain it
+        db.photosOnAlbums = db.photosOnAlbums.filter(
+          (relation) =>
+            relation.photoId !== photoId ||
+            !albumsToRemove.includes(relation.albumId)
+        )
+
+        // Add photo to new albums
+        for (const albumId of albumsToAdd) {
+          db.photosOnAlbums.push({
+            photoId: photoId,
+            albumId: albumId,
+          })
+        }
+
+        return db
+      })
+      .catch(() => {
+        return false
+      })
+
+    return true
+  }
 }

@@ -6,6 +6,7 @@ import { Database } from '../models'
 export class DatabaseService {
   private dbPath: string
   private dataDir: string
+  private writeLock = Promise.resolve()
 
   constructor() {
     this.dataDir = resolve(process.cwd(), 'data')
@@ -57,5 +58,19 @@ export class DatabaseService {
       console.error('Error writing database:', error)
       throw new Error('Failed to write to database')
     }
+  }
+
+  async enqueueWrite(operation: (db: Database) => Promise<Database>) {
+    const nextLock = this.writeLock.then(async () => {
+      const currentData = await this.readDatabase()
+
+      const updatedData = await operation(currentData)
+
+      await this.writeDatabase(updatedData)
+    })
+
+    this.writeLock = nextLock.catch(() => {})
+
+    return nextLock
   }
 }
